@@ -47,9 +47,11 @@ export const useCategory = (id: string) => {
 
 // Cart hooks
 export const useCart = () => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   return useQuery({
     queryKey: ['cart'],
     queryFn: () => cartApi.getCart(),
+    enabled: !!token,
   });
 };
 

@@ -4,10 +4,16 @@ import React from 'react';
 import { Search, ShoppingCart, User, Menu, Globe, ChevronDown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
-export default function Navbar() {
+export default function Navbar({ onSearch }: { onSearch?: (query: string) => void }) {
   const { totalItems } = useCart();
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSearch) onSearch(searchQuery);
+  };
   return (
-    <nav className="sticky top-0 left-0 right-0 z-[100] w-full bg-primary text-white shadow-md font-sans border-none">
+    <nav className="sticky top-0 left-0 right-0 z-50 w-full bg-primary text-white shadow-md font-sans border-none m-0 p-0">
       {/* Top Header */}
       <div className="mx-auto max-w-[1400px] px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-8 h-12">
@@ -27,24 +33,26 @@ export default function Navbar() {
           {/* Search Bar */}
           <div className="hidden flex-1 items-center max-w-4xl lg:flex">
             <div className="relative w-full group">
-              <div className="flex items-center h-10 w-full rounded-md overflow-hidden bg-white ring-offset-primary transition-all focus-within:ring-2 focus-within:ring-accent">
+              <form onSubmit={handleSearch} className="flex items-center h-10 w-full rounded-md overflow-hidden bg-white ring-offset-primary transition-all focus-within:ring-2 focus-within:ring-accent">
                 {/* Category Dropdown */}
-                <button className="flex items-center gap-1.5 bg-[#f3f3f3] px-3.5 h-full text-[12px] font-medium text-[#555] hover:bg-[#e3e3e3] hover:text-[#0f1111] transition-all border-r border-[#ddd] shrink-0">
+                <button type="button" className="flex items-center gap-1.5 bg-[#f3f3f3] px-3.5 h-full text-[12px] font-medium text-[#555] hover:bg-[#e3e3e3] hover:text-[#0f1111] transition-all border-r border-[#ddd] shrink-0">
                   All <ChevronDown className="h-3 w-3 opacity-60" />
                 </button>
                 
                 {/* Input Area */}
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search technical inventory..."
                   className="h-full w-full bg-transparent px-4 text-[14px] font-medium text-[#0f1111] placeholder:text-[#565959] focus:outline-none"
                 />
                 
                 {/* Search Button */}
-                <button className="flex h-full w-[45px] items-center justify-center bg-accent text-white hover:bg-accent-light transition-all">
+                <button type="submit" className="flex h-full w-[45px] items-center justify-center bg-accent text-white hover:bg-accent-light transition-all">
                   <Search className="h-5.5 w-5.5 stroke-[2.5px]" />
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 

@@ -12,12 +12,18 @@ export default function Home() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     async function fetchProducts() {
       try {
         setLoading(true);
-        const data = await apiClient.get<any>('/products');
+        const params: any = { status: 'published' };
+        if (activeCategory) params.category = activeCategory;
+        if (searchQuery) params.search = searchQuery;
+        
+        const data = await apiClient.get<any>('/products', { params });
         setProducts(data.products || []);
         setError(null);
       } catch (err: any) {
@@ -29,17 +35,20 @@ export default function Home() {
     }
 
     fetchProducts();
-  }, []);
+  }, [activeCategory, searchQuery]);
 
   return (
     <div className="flex min-h-full flex-col bg-secondary-bg selection:bg-accent selection:text-white">
-      <Navbar />
+      <Navbar onSearch={(query) => setSearchQuery(query)} />
 
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-10 lg:flex-row">
             {/* Sidebar */}
-            <Sidebar />
+            <Sidebar 
+              activeCategory={activeCategory} 
+              onCategorySelect={(cat) => setActiveCategory(cat)} 
+            />
 
             {/* Content Area */}
             <div className="flex-1">
@@ -82,7 +91,7 @@ export default function Home() {
                       name={product.name}
                       price={Number(product.price)}
                       image={product.image || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800'}
-                      category={typeof product.category === 'object' ? product.category.name : (product.category || 'Tools')}
+                      categories={Array.isArray(product.categories) ? product.categories : [product.category || 'Tools']}
                       rating={4} // Default rating
                     />
                   ))}

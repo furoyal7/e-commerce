@@ -261,15 +261,17 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-12 pb-20">
-      {/* Top Banner/Stats */}
-      <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-black text-[#131921] tracking-tight mb-2 uppercase italic">
-            Control Center
-          </h1>
-          <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">
-            Advanced Tool Management & Global Logistics
-          </p>
+      {/* Top Banner/Stats - Sticky Header Deployment */}
+      <div className="sticky top-0 z-50 bg-secondary-bg pt-8 pb-4 -mt-8 -mx-4 px-4 border-b border-slate-200/60 transition-all">
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between max-w-[1400px] mx-auto">
+          <div>
+            <h1 className="text-3xl font-black text-[#131921] tracking-tight mb-2 uppercase italic">
+              Control Center
+            </h1>
+            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+              Advanced Tool Management & Global Logistics
+            </p>
+          </div>
         </div>
       </div>
 

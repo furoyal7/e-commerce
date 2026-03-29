@@ -2,13 +2,13 @@ import React from 'react';
 import { ChevronDown, Plus, Star } from 'lucide-react';
 
 const categories = [
-  { name: 'Clothes', icon: '👕' },
-  { name: 'Footwear', icon: '👟' },
-  { name: 'Jewelry', icon: '💎' },
-  { name: 'Perfume', icon: '🧴' },
-  { name: 'Cosmetics', icon: '💄' },
-  { name: 'Glasses', icon: '👓' },
-  { name: 'Bags', icon: '👜' },
+  { name: 'Electronics', icon: '📱' },
+  { name: 'Fashion', icon: '👕' },
+  { name: 'Home & Kitchen', icon: '🏠' },
+  { name: 'Beauty & Personal Care', icon: '💄' },
+  { name: 'Sports & Outdoors', icon: '🏋️' },
+  { name: 'Groceries', icon: '🍔' },
+  { name: 'Gaming', icon: '🎮' },
 ];
 
 const bestSellers = [
@@ -42,24 +42,48 @@ const bestSellers = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ 
+  onCategorySelect, 
+  activeCategory 
+}: { 
+  onCategorySelect?: (category: string | null) => void,
+  activeCategory?: string | null
+}) {
   return (
     <div className="w-full lg:w-[300px] flex flex-col gap-8 shrink-0">
       {/* Category Section */}
       <div className="rounded-lg bg-white border border-border p-6 shadow-sm">
         <h3 className="text-sm font-black tracking-widest text-[#0f1111] uppercase mb-6 flex items-center justify-between">
           Category
+          {activeCategory && (
+            <button 
+              onClick={() => onCategorySelect?.(null)}
+              className="text-[10px] font-black text-accent hover:underline lowercase tracking-normal"
+            >
+              Clear
+            </button>
+          )}
         </h3>
         <div className="flex flex-col gap-1">
           {categories.map((cat) => (
-            <div key={cat.name} className="group flex items-center justify-between py-2.5 cursor-pointer border-b border-border/50 last:border-none">
+            <div 
+              key={cat.name} 
+              onClick={() => onCategorySelect?.(cat.name)}
+              className={`group flex items-center justify-between py-2.5 cursor-pointer border-b border-border/50 last:border-none transition-all ${
+                activeCategory === cat.name ? 'translate-x-1' : ''
+              }`}
+            >
               <div className="flex items-center gap-3">
                 <span className="text-lg">{cat.icon}</span>
-                <span className="text-[13px] font-medium text-[#565959] group-hover:text-accent transition-colors">
+                <span className={`text-[13px] font-bold group-hover:text-accent transition-colors ${
+                  activeCategory === cat.name ? 'text-accent' : 'text-[#565959]'
+                }`}>
                   {cat.name}
                 </span>
               </div>
-              <Plus className="h-3 w-3 text-[#565959] group-hover:text-accent" />
+              <Plus className={`h-3 w-3 transition-colors ${
+                activeCategory === cat.name ? 'text-accent rotate-45' : 'text-[#565959] group-hover:text-accent'
+              }`} />
             </div>
           ))}
         </div>
