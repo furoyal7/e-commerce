@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build files
+dist/
+build/
+.next/
+
+# Environment variables (CRITICAL)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Cache
+.cache/
+coverage/
+
+# Temp
+tmp/
+temp/
+
+# Uploads
+uploads/

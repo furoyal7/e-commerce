@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: var(--secondary-bg);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  :root {
+    --navbar-height: 104px;
+  }
+
+  :root {
+    /* Amazon-Style International Palette */
+    --background: #ffffff;
+    --foreground: #0f1111;
+    
+    /* Page Background & Contrast */
+    --secondary-bg: #f3f4f6;
+    --surface: #ffffff;
+    --card: #ffffff;
+    
+    /* Global Corporate Trust (Navy/Indigo) */
+    --primary: #131921; /* Core Navy */
+    --primary-light: #232f3e; /* Sub-nav / Footer Navy */
+    --primary-slate: #37475a; /* 'Back to Top' / Divider Slate */
+    --primary-foreground: #ffffff;
+    
+    /* Conversion & Action (Amber Premium) */
+    --accent: #f08804; /* Primary Amber */
+    --accent-light: #febd69; /* Hover / Secondary Amber */
+    --accent-foreground: #0f1111;
+    
+    /* Status & Metadata */
+    --muted: #f7f8f8;
+    --muted-foreground: #565959;
+    
+    /* Standard Borders */
+    --border: #d5d9d9;
+    
+    /* Functional */
+    --success: #007600;
+    --destructive: #b12704;
+  }
+
+  body {
+    background-color: var(--secondary-bg);
+    color: var(--foreground);
+    @apply font-sans antialiased;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-secondary-bg: var(--secondary-bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-slate: var(--primary-slate);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  --shadow-standard: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
