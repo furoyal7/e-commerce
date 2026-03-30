@@ -23,9 +23,17 @@ export class ProductsController {
 
   // 3. GET PRODUCTS (Frontend) - GET /api/products
   @Get()
-  async findAll(@Query('all') all?: string) {
+  async findAll(
+    @Query('all') all?: string,
+    @Query('search') search?: string,
+    @Query('category') category?: string,
+  ) {
     const showAll = all === 'true'; 
-    const products = await this.productsService.findAll({ status: showAll ? undefined : 'published' as any });
+    const products = await this.productsService.findAll({ 
+      status: showAll ? undefined : 'published' as any,
+      search,
+      category,
+    });
     return {
       success: true,
       products,

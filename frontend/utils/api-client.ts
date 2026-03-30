@@ -4,7 +4,7 @@ type ApiRequestOptions = RequestInit & {
 
 class ApiClient {
   private static instance: ApiClient;
-  private baseUrl: string = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+  private baseUrl: string = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
   private constructor() {}
 
@@ -42,9 +42,8 @@ class ApiClient {
       
       // Automatic Refresh Token Rotation placeholder
       if (response.status === 401 && typeof window !== 'undefined') {
-        console.warn('Unauthorized. Session expired or invalid. Redirecting to login...');
-        localStorage.removeItem('accessToken');
-        window.location.href = '/login';
+        console.warn('Unauthorized. Session expired or invalid.');
+        // logic for refresh token goes here
       }
 
       throw new Error(errorData.message || `API Error: ${response.status}`);

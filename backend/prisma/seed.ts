@@ -1,7 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+    },
+  },
+});
 
 async function main() {
   console.log('Start seeding...');
@@ -35,24 +41,30 @@ async function main() {
   });
 
   // Create categories
-  const electronics = await prisma.category.create({
-    data: {
+  const electronics = await prisma.category.upsert({
+    where: { slug: 'electronics' },
+    update: {},
+    create: {
       name: 'Electronics',
       slug: 'electronics',
       description: 'Electronic devices and gadgets',
     },
   });
 
-  const tools = await prisma.category.create({
-    data: {
+  const tools = await prisma.category.upsert({
+    where: { slug: 'tools' },
+    update: {},
+    create: {
       name: 'Tools',
       slug: 'tools',
       description: 'Professional tools and equipment',
     },
   });
 
-  const subcategory = await prisma.category.create({
-    data: {
+  const subcategory = await prisma.category.upsert({
+    where: { slug: 'power-tools' },
+    update: {},
+    create: {
       name: 'Power Tools',
       slug: 'power-tools',
       description: 'Electric and battery-powered tools',
@@ -60,59 +72,7 @@ async function main() {
     },
   });
 
-  // Create products
-  const productData = [
-    {
-      name: 'Professional Drill Machine',
-      slug: 'professional-drill-machine',
-      description: 'High-quality drill machine for professional use with variable speed control.',
-      price: 299.99,
-      currency: 'USD',
-      stock: 50,
-      image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400',
-      status: 'published' as any,
-      categories: { connect: [{ id: subcategory.id }] },
-    },
-    {
-      name: 'Wireless Headphones',
-      slug: 'wireless-headphones',
-      description: 'Premium noise-canceling wireless headphones with 30-hour battery life.',
-      price: 199.99,
-      currency: 'USD',
-      stock: 100,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
-      status: 'published' as any,
-      categories: { connect: [{ id: electronics.id }] },
-    },
-    {
-      name: 'Laptop Stand',
-      slug: 'laptop-stand',
-      description: 'Adjustable aluminum laptop stand for better ergonomics.',
-      price: 49.99,
-      currency: 'USD',
-      stock: 75,
-      image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400',
-      status: 'published' as any,
-      categories: { connect: [{ id: electronics.id }] },
-    },
-    {
-      name: 'Socket Set',
-      slug: 'socket-set',
-      description: 'Complete socket set with ratchet and extensions.',
-      price: 89.99,
-      currency: 'USD',
-      stock: 30,
-      image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400',
-      status: 'draft' as any,
-      categories: { connect: [{ id: tools.id }] },
-    },
-  ];
-
-  for (const product of productData) {
-    await prisma.product.create({
-      data: product,
-    });
-  }
+  console.log('Users and categories created successfully.');
 
   console.log('Seeding finished.');
 }

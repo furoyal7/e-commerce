@@ -103,17 +103,20 @@ export class ProductsService {
     const { category, status, featured, search, sort, minPrice, maxPrice, isAdmin, userRole } = query;
 
     const where: any = {};
+    const andConditions: any[] = [];
 
     // 1. Visibility & Status Logic
     if (!isAdmin) {
       // Public view: only published or scheduled (if date is past)
-      where.OR = [
-        { status: 'published' },
-        { 
-          status: 'scheduled',
-          publish_date: { lte: new Date() }
-        }
-      ];
+      andConditions.push({
+        OR: [
+          { status: 'published' },
+          { 
+            status: 'scheduled',
+            publish_date: { lte: new Date() }
+          }
+        ]
+      });
       where.visibility = 'public';
     } else if (status) {
       where.status = status;
@@ -138,12 +141,19 @@ export class ProductsService {
 
     // 4. Search Logic
     if (search) {
-      where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { tags: { hasSome: [search] } }
-      ];
+      andConditions.push({
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { description: { contains: search, mode: 'insensitive' } },
+          { tags: { hasSome: [search] } }
+        ]
+      });
     }
+
+    if (andConditions.length > 0) {
+      where.AND = andConditions;
+    }
+
 
     // 5. Price Range
     if (minPrice || maxPrice) {
