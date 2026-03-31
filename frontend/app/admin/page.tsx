@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Home, Package, Users, FileText, CreditCard, BarChart3, Settings, TrendingUp, ShoppingCart, DollarSign, Plus, Search, Bell, User, Moon, Sun, Menu, ChevronDown } from 'lucide-react';
+import ProductManagement from './components/ProductManagement';
+import OrderManagement from './components/OrderManagement';
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -129,6 +131,10 @@ export default function AdminDashboard() {
             </div>
           </div>
         );
+      case 'products':
+        return <ProductManagement />;
+      case 'orders':
+        return <OrderManagement />;
       default:
         return (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center">

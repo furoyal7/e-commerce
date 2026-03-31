@@ -1,8 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-import dotenv from 'dotenv'
-
-dotenv.config()
+import { prisma } from './lib/prisma'
+import authRoutes from './routes/auth.routes'
+import productRoutes from './routes/product.routes'
+import orderRoutes from './routes/order.routes'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -10,12 +11,11 @@ const PORT = process.env.PORT || 3001
 // Middleware
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
 // Routes
-app.use('/api/auth', require('./routes/auth.routes'))
-app.use('/api/products', require('./routes/product.routes'))
-app.use('/api/orders', require('./routes/order.routes'))
+app.use('/api/auth', authRoutes)
+app.use('/api/products', productRoutes)
+app.use('/api/orders', orderRoutes)
 
 // Health check
 app.get('/health', (req, res) => {
