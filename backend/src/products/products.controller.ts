@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, Request, Query, NotFoundException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from '../common/jwt-auth.guard';
 import { AdminGuard } from '../common/admin.guard';
 import { Roles } from '../common/roles.decorator';
@@ -37,6 +38,17 @@ export class ProductsController {
     return {
       success: true,
       products,
+    };
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  @Roles('ADMIN')
+  async update(@Param('id') id: string, @Body() updateData: UpdateProductDto, @Request() req): Promise<any> {
+    const product = await this.productsService.update(id, updateData, req.user?.userId);
+    return {
+      success: true,
+      product,
     };
   }
 

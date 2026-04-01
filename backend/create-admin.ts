@@ -18,7 +18,8 @@ async function createAdmin() {
     const adminUser = await prisma.user.create({
       data: {
         email: 'admin@example.com',
-        name: 'Admin User',
+        firstName: 'Admin',
+        lastName: 'User',
         password: hashedPassword,
         role: 'ADMIN'
       }
@@ -34,12 +35,10 @@ async function createAdmin() {
         description: 'Premium noise-cancelling wireless headphones',
         price: 299.99,
         stock: 45,
-        category: 'Electronics',
         tags: ['wireless', 'bluetooth'],
         images: [],
-        status: 'ACTIVE',
-        featured: true,
-        sku: 'WH-001'
+        status: 'published' as const,
+        featured: true
       },
       {
         name: 'Laptop Stand',
@@ -47,12 +46,10 @@ async function createAdmin() {
         description: 'Adjustable aluminum laptop stand',
         price: 49.99,
         stock: 120,
-        category: 'Accessories',
         tags: ['ergonomic', 'aluminum'],
         images: [],
-        status: 'ACTIVE',
-        featured: false,
-        sku: 'LS-001'
+        status: 'published' as const,
+        featured: false
       }
     ]
     
