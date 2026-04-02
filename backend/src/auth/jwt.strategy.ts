@@ -15,6 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     // If we have more complex logic to check if user still exists/not blacklisted, do it here.
-    return { userId: payload.sub, email: payload.email, role: payload.role };
+    return { 
+      id: payload.sub, 
+      userId: payload.sub, 
+      email: payload.email, 
+      role: payload.role 
+    };
   }
+
 }

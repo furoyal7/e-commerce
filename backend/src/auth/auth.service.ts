@@ -153,7 +153,10 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
     };
+
 
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET') || 'expert-secret-key-123',

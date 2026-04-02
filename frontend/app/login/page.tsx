@@ -120,7 +120,7 @@ export default function LoginPage() {
             </div>
 
             <Link 
-              href="#" 
+              href="/register" 
               className="w-full border-2 border-slate-200 text-[#131921] py-4 rounded-2xl font-black uppercase tracking-widest text-center block hover:bg-slate-50 transition-all text-xs"
             >
               Create Corporate Account

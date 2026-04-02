@@ -139,7 +139,8 @@ export default function OrdersPage() {
                           {item.product.images?.[0] ? (
                             <img
                               src={item.product.images[0]}
-                              alt={item.product.title}
+                              alt={item.product.name}
+
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -150,8 +151,9 @@ export default function OrdersPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium text-gray-900 truncate">
-                            {item.product.title}
+                            {item.product.name}
                           </div>
+
                           <div className="text-sm text-gray-600">
                             Qty: {item.quantity} × ${item.price}
                           </div>

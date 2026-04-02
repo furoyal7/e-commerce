@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useCart, useCreateOrder } from '../../hooks/use-api';
+import { paymentsApi } from '../../lib/orders';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
@@ -17,8 +18,11 @@ export default function CheckoutPage() {
     country: '',
   });
 
+  const [paymentMethod, setPaymentMethod] = useState<'mock' | 'stripe' | 'paypal'>('mock');
+  const [paymentToken, setPaymentToken] = useState('tok_visa'); // Mock Stripe token
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -42,23 +46,39 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
     
     if (!validateForm() || !cart) return;
 
     setIsSubmitting(true);
 
     try {
+      // 1. Create Order
       const order = await createOrderMutation.mutateAsync({
         shippingAddress,
       });
 
-      // Redirect to order confirmation or payment page
-      router.push(`/orders/${order.id}`);
-    } catch (error) {
-      console.error('Failed to create order:', error);
+      // 2. Process Payment
+      const paymentResponse = await paymentsApi.processPayment({
+        orderId: order.id,
+        paymentMethod,
+        paymentToken: paymentMethod === 'stripe' ? paymentToken : undefined,
+      });
+
+      if (paymentResponse.success) {
+        // Redirect to order details
+        router.push(`/orders/${order.id}`);
+      } else {
+        setSubmitError(paymentResponse.message || 'Payment failed. Please try again.');
+        setIsSubmitting(false);
+      }
+    } catch (error: any) {
+      console.error('Checkout failed:', error);
+      setSubmitError(error.response?.data?.message || 'Failed to complete checkout. Please try again.');
       setIsSubmitting(false);
     }
   };
+
 
   if (isLoading) {
     return (
@@ -213,21 +233,35 @@ export default function CheckoutPage() {
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-lg font-semibold mb-4">Payment Method</h2>
                 <div className="space-y-3">
-                  <label className="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
-                    <input type="radio" name="payment" value="mock" defaultChecked className="mr-3" />
+                  <label 
+                    className={`flex items-center p-3 border rounded-md cursor-pointer hover:bg-gray-50 ${
+                      paymentMethod === 'mock' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                    }`}
+                    onClick={() => setPaymentMethod('mock')}
+                  >
+                    <input type="radio" name="payment" value="mock" checked={paymentMethod === 'mock'} readOnly className="mr-3" />
                     <div>
                       <div className="font-medium">Mock Payment</div>
                       <div className="text-sm text-gray-600">Test payment method for development</div>
                     </div>
                   </label>
-                  <label className="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 opacity-50">
-                    <input type="radio" name="payment" value="stripe" disabled className="mr-3" />
+                  <label 
+                    className={`flex items-center p-3 border rounded-md cursor-pointer hover:bg-gray-50 ${
+                      paymentMethod === 'stripe' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                    }`}
+                    onClick={() => setPaymentMethod('stripe')}
+                  >
+                    <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} readOnly className="mr-3" />
                     <div>
                       <div className="font-medium">Credit Card (Stripe)</div>
-                      <div className="text-sm text-gray-600">Coming soon</div>
+                      <div className="text-sm text-gray-600">Secure payment via Stripe</div>
                     </div>
                   </label>
-                  <label className="flex items-center p-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 opacity-50">
+                  <label 
+                    className={`flex items-center p-3 border rounded-md cursor-pointer hover:bg-gray-50 opacity-50 ${
+                      paymentMethod === 'paypal' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                    }`}
+                  >
                     <input type="radio" name="payment" value="paypal" disabled className="mr-3" />
                     <div>
                       <div className="font-medium">PayPal</div>
@@ -251,7 +285,7 @@ export default function CheckoutPage() {
                         {item.product.images?.[0] ? (
                           <img
                             src={item.product.images[0]}
-                            alt={item.product.title}
+                            alt={item.product.name}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -262,7 +296,7 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-gray-900 truncate">
-                          {item.product.title}
+                          {item.product.name}
                         </div>
                         <div className="text-sm text-gray-600">
                           {item.quantity} × ${item.product.price}

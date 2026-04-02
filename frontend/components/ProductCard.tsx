@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext';
 interface ProductCardProps {
   id: string | number;
   name: string;
+  slug: string;
   price: number;
   discountPrice?: number;
   rating: number;
@@ -20,6 +21,7 @@ interface ProductCardProps {
 export default function ProductCard({
   id,
   name,
+  slug,
   price,
   discountPrice,
   rating,
@@ -31,6 +33,12 @@ export default function ProductCard({
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [added, setAdded] = useState(false);
+  const router = require('next/navigation').useRouter();
+
+  const handleNavigate = () => {
+    router.push(`/products/${slug}`);
+  };
+
 
   const displayCategory = Array.isArray(categories) 
     ? (categories[0]?.name || categories[0] || 'Uncategorized') 
@@ -52,8 +60,11 @@ export default function ProductCard({
   };
 
   return (
-    <div className="group relative flex flex-col bg-white rounded-lg border border-border overflow-hidden transition-all hover:shadow-md h-full">
-      {/* Badges */}
+    <div 
+      onClick={handleNavigate}
+      className="group relative flex flex-col bg-white rounded-lg border border-border overflow-hidden transition-all hover:shadow-md h-full cursor-pointer"
+    >
+      {/* Badges ... (No change) */}
       <div className="absolute top-4 left-0 z-10 flex flex-col gap-1">
         {featured && (
           <div className="bg-[#f08804] px-3 py-1 text-[9px] font-black text-white uppercase tracking-widest shadow-sm">
@@ -84,10 +95,16 @@ export default function ProductCard({
           >
             {isAdding ? <Loader2 className="h-4 w-4 animate-spin" /> : added ? <Check className="h-4 w-4 text-green-500" /> : <ShoppingCart className="h-4 w-4" />}
           </button>
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary shadow-sm hover:bg-accent hover:text-white transition-all">
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary shadow-sm hover:bg-accent hover:text-white transition-all"
+          >
             <Heart className="h-4 w-4" />
           </button>
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary shadow-sm hover:bg-accent hover:text-white transition-all">
+          <button 
+            onClick={handleNavigate}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary shadow-sm hover:bg-accent hover:text-white transition-all"
+          >
             <Eye className="h-4 w-4" />
           </button>
         </div>
@@ -101,6 +118,7 @@ export default function ProductCard({
         <h3 className="text-[14px] font-bold text-[#0f1111] line-clamp-2 leading-tight min-h-[40px] group-hover:text-accent transition-colors">
           {name}
         </h3>
+
         
         {/* Rating */}
         <div className="flex items-center gap-0.5 mt-1">

@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useProducts, useCategories, useRootCategories } from '../../hooks/use-api';
 import { ProductFilters } from '../../lib/products';
+import ProductCard from '@/components/ProductCard';
+
 
 export default function ProductsPage() {
   const [filters, setFilters] = useState<ProductFilters>({
@@ -144,41 +146,19 @@ export default function ProductsPage() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {productsData?.products.map((product) => (
-                    <div key={product.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                      <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg bg-gray-200">
-                        {product.images?.[0] ? (
-                          <img
-                            src={product.images[0]}
-                            alt={product.title}
-                            className="h-48 w-full object-cover object-center"
-                          />
-                        ) : (
-                          <div className="h-48 w-full bg-gray-200 flex items-center justify-center">
-                            <span className="text-gray-400">No image</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-4">
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">
-                          <a href={`/products/${product.slug}`} className="hover:text-blue-600">
-                            {product.title}
-                          </a>
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-2 line-clamp-2">
-                          {product.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-2xl font-bold text-gray-900">
-                            ${product.price}
-                          </span>
-                          <span className={`text-sm ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    <ProductCard
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      slug={product.slug}
+                      price={Number(product.price)}
+                      image={product.images?.[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800'}
+                      categories={product.categories || []}
+                      rating={4}
+                    />
                   ))}
                 </div>
+
 
                 {/* Pagination */}
                 {productsData && Math.ceil((productsData.total || 0) / (filters.limit || 12)) > 1 && (

@@ -9,10 +9,11 @@ export interface OrderItem {
   createdAt: string;
   product: {
     id: string;
-    title: string;
+    name: string;
     slug: string;
     images: string[];
   };
+
 }
 
 export interface Order {

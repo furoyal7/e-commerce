@@ -9,8 +9,9 @@ export interface CartItem {
   updatedAt: string;
   product: {
     id: string;
-    title: string;
+    name: string;
     slug: string;
+
     price: number;
     currency: string;
     stock: number;

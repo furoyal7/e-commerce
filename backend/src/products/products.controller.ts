@@ -64,6 +64,19 @@ export class ProductsController {
     };
   }
 
+  @Get('slug/:slug')
+  async findBySlug(@Param('slug') slug: string): Promise<any> {
+    const product = await this.productsService.findOne(slug, true);
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    return {
+      success: true,
+      product,
+    };
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<any> {
     const product = await this.productsService.findOne(id, true); // Track view
@@ -72,6 +85,7 @@ export class ProductsController {
       product,
     };
   }
+
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, AdminGuard)

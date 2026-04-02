@@ -89,8 +89,9 @@ export default function Home() {
                       key={product.id} 
                       id={product.id}
                       name={product.name}
+                      slug={product.slug}
                       price={Number(product.price)}
-                      image={product.image || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800'}
+                      image={product.image || product.images?.[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800'}
                       categories={Array.isArray(product.categories) ? product.categories : [product.category || 'Tools']}
                       rating={4} // Default rating
                     />

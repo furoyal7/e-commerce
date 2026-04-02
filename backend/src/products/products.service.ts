@@ -182,15 +182,21 @@ export class ProductsService {
   }
 
   async findOne(idOrSlug: string, trackView = false): Promise<any> {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug);
+    
     const product = await this.prisma.product.findFirst({
       where: {
-        OR: [{ id: idOrSlug }, { slug: idOrSlug }]
+        OR: [
+          ...(isUuid ? [{ id: idOrSlug }] : []),
+          { slug: idOrSlug }
+        ]
       },
       include: {
         categories: true,
         analytics: true
       }
     });
+
 
     if (!product) {
       throw new NotFoundException(`Product not found`);

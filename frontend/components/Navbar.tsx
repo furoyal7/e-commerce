@@ -3,6 +3,7 @@
 import React from 'react';
 import { Search, ShoppingCart, User, Menu, Globe, ChevronDown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import Link from 'next/link';
 
 export default function Navbar({ onSearch }: { onSearch?: (query: string) => void }) {
   const { totalItems } = useCart();
@@ -64,20 +65,20 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
               <ChevronDown className="h-3 w-3 opacity-50" />
             </div>
 
-            <div className="flex flex-col cursor-pointer hover:outline hover:outline-1 hover:outline-white/40 p-1 rounded">
+            <Link href="/login" className="flex flex-col cursor-pointer hover:outline hover:outline-1 hover:outline-white/40 p-1 rounded">
               <span className="text-[10px] text-white/70 leading-none">Hello, Sign in</span>
               <div className="flex items-center gap-1 text-[12px] font-bold">
                 <span>Account & Lists</span>
                 <ChevronDown className="h-3 w-3 opacity-50" />
               </div>
-            </div>
+            </Link>
 
             <div className="flex flex-col cursor-pointer hover:outline hover:outline-1 hover:outline-white/40 p-1 rounded">
               <span className="text-[10px] text-white/70 leading-none">Returns</span>
               <span className="text-[12px] font-bold tracking-tight">& Orders</span>
             </div>
 
-            <div className="relative flex items-end gap-1 cursor-pointer hover:outline hover:outline-1 hover:outline-white/40 p-1 rounded group">
+            <Link href="/cart" className="relative flex items-end gap-1 cursor-pointer hover:outline hover:outline-1 hover:outline-white/40 p-1 rounded group">
               <div className="relative">
                 <ShoppingCart className="h-7 w-7" />
                 <span className="absolute -top-1.5 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-black text-white">
@@ -85,7 +86,7 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
                 </span>
               </div>
               <span className="hidden text-[12px] font-bold tracking-tight lg:block">Cart</span>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
