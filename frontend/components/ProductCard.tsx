@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Star, ShoppingCart, Heart, Eye, Loader2, Check } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { getCategoryIcon } from '@/lib/constants';
 
 interface ProductCardProps {
   id: string | number;
@@ -112,7 +113,8 @@ export default function ProductCard({
 
       {/* Content Section */}
       <div className="flex flex-col gap-2 p-5 text-left">
-        <span className="text-[10px] font-black tracking-widest text-accent uppercase">
+        <span className="flex items-center gap-1.5 text-[10px] font-black tracking-widest text-accent uppercase">
+          <span className="text-[14px] leading-none mb-0.5">{getCategoryIcon(displayCategory)}</span>
           {displayCategory}
         </span>
         <h3 className="text-[14px] font-bold text-[#0f1111] line-clamp-2 leading-tight min-h-[40px] group-hover:text-accent transition-colors">

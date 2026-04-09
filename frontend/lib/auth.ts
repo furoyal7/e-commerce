@@ -29,11 +29,11 @@ export interface RegisterData {
 
 export const authApi = {
   login: (data: LoginData): Promise<AuthResponse> =>
-    api.post('/auth/login', data).then(res => res.data),
+    api.post('auth/login', data).then(res => res.data),
 
   register: (data: RegisterData): Promise<AuthResponse> =>
-    api.post('/auth/register', data).then(res => res.data),
+    api.post('auth/register', data).then(res => res.data),
 
   refreshToken: (refreshToken: string): Promise<AuthResponse> =>
-    api.post('/auth/refresh', { refreshToken }).then(res => res.data),
+    api.post('auth/refresh', { refreshToken }).then(res => res.data),
 };

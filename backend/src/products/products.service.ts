@@ -93,6 +93,7 @@ export class ProductsService {
     category?: string;
     status?: ProductStatus;
     featured?: boolean;
+    onSale?: boolean;
     search?: string;
     sort?: string;
     minPrice?: number;
@@ -100,7 +101,7 @@ export class ProductsService {
     isAdmin?: boolean;
     userRole?: UserRole;
   }): Promise<any[]> {
-    const { category, status, featured, search, sort, minPrice, maxPrice, isAdmin, userRole } = query;
+    const { category, status, featured, onSale, search, sort, minPrice, maxPrice, isAdmin, userRole } = query;
 
     const where: any = {};
     const andConditions: any[] = [];
@@ -137,6 +138,16 @@ export class ProductsService {
     // 3. Featured Filter
     if (featured !== undefined) {
       where.featured = featured;
+    }
+
+    // 4. On Sale Filter
+    if (onSale) {
+      const now = new Date();
+      andConditions.push({
+        discount_price: { not: null },
+        sale_start: { lte: now },
+        sale_end: { gte: now }
+      });
     }
 
     // 4. Search Logic

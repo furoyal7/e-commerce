@@ -65,13 +65,13 @@ export interface ProductFilters {
 
 export const productsApi = {
   getProducts: (filters?: ProductFilters): Promise<{ products: Product[]; total: number }> =>
-    api.get('/products', { params: filters }).then(res => res.data),
+    api.get('products', { params: filters }).then(res => res.data),
 
   getProduct: (slug: string): Promise<Product> =>
-    api.get(`/products/slug/${slug}`).then(res => res.data),
+    api.get(`products/slug/${slug}`).then(res => res.data.product),
 
   getProductById: (id: string): Promise<Product> =>
-    api.get(`/products/${id}`).then(res => res.data),
+    api.get(`products/${id}`).then(res => res.data.product),
 };
 
 export const categoriesApi = {

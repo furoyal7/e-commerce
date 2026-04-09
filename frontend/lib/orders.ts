@@ -66,25 +66,25 @@ export interface ProcessPaymentData {
 
 export const ordersApi = {
   getOrders: (): Promise<Order[]> =>
-    api.get('/orders').then(res => res.data),
+    api.get('orders').then(res => res.data),
 
   getOrder: (id: string): Promise<Order> =>
-    api.get(`/orders/${id}`).then(res => res.data),
+    api.get(`orders/${id}`).then(res => res.data),
 
   createOrder: (data: CreateOrderData): Promise<Order> =>
-    api.post('/orders', data).then(res => res.data),
+    api.post('orders', data).then(res => res.data),
 
   cancelOrder: (id: string): Promise<{ message: string }> =>
-    api.post(`/orders/${id}/cancel`).then(res => res.data),
+    api.post(`orders/${id}/cancel`).then(res => res.data),
 };
 
 export const paymentsApi = {
   processPayment: (data: ProcessPaymentData): Promise<PaymentResponse> =>
-    api.post('/payments/process', data).then(res => res.data),
+    api.post('payments/process', data).then(res => res.data),
 
   getPaymentMethods: (): Promise<any[]> =>
-    api.get('/payments/methods').then(res => res.data),
+    api.get('payments/methods').then(res => res.data),
 
   refundPayment: (orderId: string): Promise<PaymentResponse> =>
-    api.post(`/payments/${orderId}/refund`).then(res => res.data),
+    api.post(`payments/${orderId}/refund`).then(res => res.data),
 };

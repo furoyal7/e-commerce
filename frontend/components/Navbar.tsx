@@ -3,10 +3,13 @@
 import React from 'react';
 import { Search, ShoppingCart, User, Menu, Globe, ChevronDown } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useUI } from '@/context/UIContext';
 import Link from 'next/link';
+import { CATEGORIES } from '@/lib/constants';
 
 export default function Navbar({ onSearch }: { onSearch?: (query: string) => void }) {
   const { totalItems } = useCart();
+  const { toggleSidebar } = useUI();
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -20,7 +23,10 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
         <div className="flex items-center justify-between gap-8 h-12">
           {/* Logo */}
           <div className="flex items-center gap-4 shrink-0">
-            <Menu className="h-6 w-6 lg:hidden cursor-pointer" />
+            <Menu 
+              className="h-6 w-6 lg:hidden cursor-pointer hover:text-accent transition-colors" 
+              onClick={toggleSidebar}
+            />
             <div className="flex items-center gap-1 cursor-pointer group">
               <div className="flex h-7 w-7 items-center justify-center rounded bg-accent text-white font-black text-sm italic">
                 A
@@ -36,9 +42,15 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
             <div className="relative w-full group">
               <form onSubmit={handleSearch} className="flex items-center h-10 w-full rounded-md overflow-hidden bg-white ring-offset-primary transition-all focus-within:ring-2 focus-within:ring-accent">
                 {/* Category Dropdown */}
-                <button type="button" className="flex items-center gap-1.5 bg-[#f3f3f3] px-3.5 h-full text-[12px] font-medium text-[#555] hover:bg-[#e3e3e3] hover:text-[#0f1111] transition-all border-r border-[#ddd] shrink-0">
-                  All <ChevronDown className="h-3 w-3 opacity-60" />
-                </button>
+                <div className="relative h-full shrink-0">
+                  <select className="appearance-none bg-[#f3f3f3] pl-3 pr-8 h-full text-[12px] font-medium text-[#555] hover:bg-[#e3e3e3] hover:text-[#0f1111] transition-all border-r border-[#ddd] outline-none cursor-pointer">
+                    <option value="">All</option>
+                    {CATEGORIES.map(cat => (
+                      <option key={cat.name} value={cat.name}>{cat.name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 opacity-60 pointer-events-none" />
+                </div>
                 
                 {/* Input Area */}
                 <input
@@ -95,14 +107,27 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
       <div className="bg-[#232f3e] border-t border-white/5">
         <div className="mx-auto max-w-[1400px] px-4 py-2 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8 overflow-x-auto no-scrollbar">
-            <button className="flex items-center gap-1 text-[11px] font-bold hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded shrink-0">
+            <button 
+              onClick={toggleSidebar}
+              className="flex items-center gap-1 text-[11px] font-bold hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded shrink-0"
+            >
               <Menu className="h-4 w-4" /> All
             </button>
-            {['Today\'s Deals', 'Customer Service', 'Registry', 'Gift Cards', 'Sell'].map((item) => (
-              <a key={item} href="#" className="text-[11px] font-semibold whitespace-nowrap hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded transition-all">
-                {item}
-              </a>
-            ))}
+            <Link href="/deals" className="text-[11px] font-semibold whitespace-nowrap hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded transition-all">
+              Today's Deals
+            </Link>
+            <Link href="/customer-service" className="text-[11px] font-semibold whitespace-nowrap hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded transition-all">
+              Customer Service
+            </Link>
+            <Link href="/registry" className="text-[11px] font-semibold whitespace-nowrap hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded transition-all">
+              Registry
+            </Link>
+            <Link href="/products?category=Gift Cards" className="text-[11px] font-semibold whitespace-nowrap hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded transition-all">
+              Gift Cards
+            </Link>
+            <Link href="/sell" className="text-[11px] font-semibold whitespace-nowrap hover:outline hover:outline-1 hover:outline-white/40 px-1 rounded transition-all">
+              Sell
+            </Link>
           </div>
         </div>
       </div>

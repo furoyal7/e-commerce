@@ -28,16 +28,21 @@ export class ProductsController {
     @Query('all') all?: string,
     @Query('search') search?: string,
     @Query('category') category?: string,
+    @Query('onSale') onSale?: string,
   ) {
     const showAll = all === 'true'; 
+    const isSale = onSale === 'true';
     const products = await this.productsService.findAll({ 
       status: showAll ? undefined : 'published' as any,
       search,
       category,
+      onSale: isSale,
     });
+    const total = await this.productsService.count();
     return {
       success: true,
       products,
+      total,
     };
   }
 

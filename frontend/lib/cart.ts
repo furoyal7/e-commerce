@@ -33,20 +33,20 @@ export interface AddToCartData {
 
 export const cartApi = {
   getCart: (): Promise<Cart> =>
-    api.get('/cart').then(res => res.data),
+    api.get('cart').then(res => res.data),
 
   addToCart: (data: AddToCartData): Promise<CartItem> =>
-    api.post('/cart', data).then(res => res.data),
+    api.post('cart', data).then(res => res.data),
 
   updateCartItem: (productId: string, quantity: number): Promise<CartItem> =>
-    api.patch(`/cart/${productId}`, { quantity }).then(res => res.data),
+    api.patch(`cart/${productId}`, { quantity }).then(res => res.data),
 
   removeFromCart: (productId: string): Promise<void> =>
-    api.delete(`/cart/${productId}`),
+    api.delete(`cart/${productId}`),
 
   clearCart: (): Promise<void> =>
-    api.delete('/cart'),
+    api.delete('cart'),
 
   validateCart: (): Promise<{ isValid: boolean; unavailableItems: any[] }> =>
-    api.get('/cart/validate').then(res => res.data),
+    api.get('cart/validate').then(res => res.data),
 };

@@ -1,17 +1,19 @@
+'use client';
+
 import React from 'react';
 import InfoPage from '@/components/InfoPage';
 
 export default function SellPage() {
   return (
     <InfoPage 
+      category="Partnership"
       title="Sell on AmazonX"
-      category="Make Money with Us"
-      content="Reach millions of customers and grow your business with AmazonX. Whether you're a small business or a global brand, our tools and services help you sell more effectively and scale faster."
+      content="Reach millions of professional buyers and corporate procurement officers worldwide. Our platform provides the infrastructure you need to deploy your specialized inventory at scale."
       highlights={[
-        "Reach Millions of Customers",
-        "Powerful Selling Tools",
-        "Fulfillment by AmazonX",
-        "Secure Payments"
+        "Global logistics & fulfillment",
+        "B2B marketplace tools",
+        "Performance analytics",
+        "Secure enterprise payments"
       ]}
     />
   );

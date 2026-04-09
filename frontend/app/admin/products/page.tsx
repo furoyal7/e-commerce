@@ -6,6 +6,7 @@ import { Plus, Edit3, Trash2, Package, Search, Upload, Eye, X, Save, FileUp, Loa
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { CATEGORIES } from '@/lib/constants';
 
 interface Product {
   id: string;
@@ -250,8 +251,16 @@ export default function ProductsManagement() {
                 </div>
                 
                 <div className="col-span-2">
-                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5 pl-1">Categories (comma separated)</label>
-                  <input {...register('categories')} placeholder="Electronics, Gadgets" className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#f08804] outline-none transition-all font-medium" />
+                  <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5 pl-1">Category</label>
+                  <select 
+                    {...register('categories')} 
+                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#f08804] outline-none transition-all font-medium appearance-none"
+                  >
+                    <option value="">Select a category</option>
+                    {CATEGORIES.map(cat => (
+                      <option key={cat.name} value={cat.name}>{cat.name}</option>
+                    ))}
+                  </select>
                   {errors.categories?.message && <p className="text-xs text-red-500 mt-1 pl-1 font-bold">{errors.categories.message as string}</p>}
                 </div>
                 

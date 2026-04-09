@@ -1,15 +1,8 @@
 import React from 'react';
 import { ChevronDown, Plus, Star } from 'lucide-react';
+import { CATEGORIES } from '@/lib/constants';
 
-const categories = [
-  { name: 'Electronics', icon: '📱' },
-  { name: 'Fashion', icon: '👕' },
-  { name: 'Home & Kitchen', icon: '🏠' },
-  { name: 'Beauty & Personal Care', icon: '💄' },
-  { name: 'Sports & Outdoors', icon: '🏋️' },
-  { name: 'Groceries', icon: '🍔' },
-  { name: 'Gaming', icon: '🎮' },
-];
+const categories = CATEGORIES;
 
 const bestSellers = [
   {
