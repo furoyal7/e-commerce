@@ -15,8 +15,9 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   
   // Enable CORS
+  const frontendUrls = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : ['http://localhost:3001'];
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+    origin: frontendUrls,
     credentials: true,
   });
   

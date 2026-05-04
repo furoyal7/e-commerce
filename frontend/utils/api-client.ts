@@ -19,6 +19,12 @@ class ApiClient {
     const { params, ...init } = options;
     
     let url = `${this.baseUrl}${endpoint}`;
+    
+    // Debug helper to see where the frontend is pointing
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+      console.log(`[ApiClient] Connecting to: ${url}`);
+    }
+
     if (params) {
       const searchParams = new URLSearchParams(params);
       url += `?${searchParams.toString()}`;

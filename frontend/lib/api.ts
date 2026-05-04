@@ -11,6 +11,10 @@ export const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
+    // Debug helper for production
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+      console.log(`[Axios] Requesting: ${config.baseURL}${config.url}`);
+    }
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
