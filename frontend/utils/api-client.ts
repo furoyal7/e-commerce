@@ -11,6 +11,10 @@ class ApiClient {
   public static getInstance(): ApiClient {
     if (!ApiClient.instance) {
       ApiClient.instance = new ApiClient();
+      // Ensure the baseUrl ends with /api if it's not already there
+      if (ApiClient.instance.baseUrl && !ApiClient.instance.baseUrl.endsWith('/api')) {
+        ApiClient.instance.baseUrl = `${ApiClient.instance.baseUrl.replace(/\/$/, '')}/api`;
+      }
     }
     return ApiClient.instance;
   }
